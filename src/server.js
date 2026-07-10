@@ -48,9 +48,29 @@ const healthChecker = startHealthChecks({
 // Create reverse proxy handler
 // ------------------------------------------------------------
 
+// const proxyHandler = createProxyHandler({
+//     ring,
+//     backends: config.backends,
+//     config
+// });
+
+// ------------------------------------------------------------
+// Build backend lookup map
+// ------------------------------------------------------------
+
+const backendMap = new Map();
+
+for (const backend of config.backends) {
+    backendMap.set(backend.id, backend);
+}
+
+// ------------------------------------------------------------
+// Create reverse proxy handler
+// ------------------------------------------------------------
+
 const proxyHandler = createProxyHandler({
     ring,
-    backends: config.backends,
+    backendMap,
     config
 });
 

@@ -37,7 +37,7 @@ function getRoutingKey(req, config) {
 
 function createProxyHandler({
     ring,
-    backends,
+    backendMap,
     config
 }) {
 
@@ -65,9 +65,7 @@ function createProxyHandler({
 
         }
 
-        const backend = backends.find(
-            node => node.id === backendId
-        );
+        const backend = backendMap.get(backendId);
 
         if (!backend) {
 
