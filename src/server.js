@@ -74,11 +74,47 @@ const proxyHandler = createProxyHandler({
     config
 });
 
+function requestHandler(req, res) {
+
+    if (req.url === "/debug/ring") {
+
+        const healthyBackends = ring.getUniqueNodes();
+
+        res.writeHead(200, {
+            "Content-Type": "application/json"
+        });
+
+        res.end(JSON.stringify({
+
+            healthyBackends: healthyBackends.length,
+
+            configuredBackends: config.backends.length,
+
+            virtualNodesPerBackend: config.vnodeCount,
+
+            ringSize: ring.getRingSize(),
+
+            routingStrategy: config.routingKeyStrategy,
+
+            backends: config.backends,
+
+            activeBackends: healthyBackends
+
+        }, null, 2));
+
+        return;
+    }
+
+    proxyHandler(req, res);
+
+}
+
 // ------------------------------------------------------------
 // Create HTTP server
 // ------------------------------------------------------------
 
-const server = http.createServer(proxyHandler);
+// const server = http.createServer(proxyHandler);
+const server = http.createServer(requestHandler);
 
 server.listen(config.lbPort, () => {
 

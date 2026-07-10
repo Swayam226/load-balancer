@@ -185,6 +185,10 @@ class ConsistentHashRing {
     getRingSnapshot() {
         return [...this.ring];
     }
+
+    getUniqueNodes() {
+        return [...new Set(this.ring.map(entry => entry.nodeId))];
+    }
 }
 
 module.exports = ConsistentHashRing;
