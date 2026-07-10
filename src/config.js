@@ -58,7 +58,7 @@ const config = {
      *  - header
      */
     routingKeyStrategy:
-        process.env.ROUTING_KEY_STRATEGY || "ip",
+        process.env.ROUTING_KEY_STRATEGY || "header",
 
     /**
      * Header used when routing strategy = "header"
